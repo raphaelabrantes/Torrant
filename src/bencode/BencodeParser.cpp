@@ -22,7 +22,7 @@ BencodeObject BencodeParser::parse() {
         case 'd':
             return dict_helper();
         default:
-            throw new std::exception();
+            throw std::exception();
     }
 }
 
@@ -30,7 +30,7 @@ char BencodeParser::peek(int offset) const {
     return (m_index + offset < m_input.length()) ? m_input[m_index + offset] : '\0';
 }
 
-string BencodeParser::consume(size_t count) {
+std::string BencodeParser::consume(size_t count) {
     auto result = m_input.substr(m_index, count);
     m_index += count;
     return result;
@@ -39,7 +39,7 @@ string BencodeParser::consume(size_t count) {
 BencodeObject BencodeParser::string_helper() {
     size_t string_size = get_size();
     increment();
-    return BencodeObject{std::move(consume(string_size))};
+    return BencodeObject{consume(string_size)};
 }
 
 size_t BencodeParser::get_size(char until) {
@@ -47,9 +47,9 @@ size_t BencodeParser::get_size(char until) {
     char c;
     while((c = peek())!= until){
         if(!isdigit(c)) {
-            throw new std::exception();
+            throw std::exception();
         }
-        string_size += c - '0';
+        string_size = (string_size * 10) + c - '0';
         increment();
     }
     return string_size;
@@ -63,18 +63,20 @@ BencodeObject BencodeParser::integer_helper() {
         increment();
     }
     size_t value = get_size('e');
+    increment();
     return BencodeObject( negative? -1 * value : value);
 }
 
 BencodeObject BencodeParser::list_helper() {
     increment();
-    std::vector<BencodeObject> becode_objects;
+    std::list<BencodeObject> becode_objects;
     while (peek() != 'e'){
         auto object = parse();
         becode_objects.push_back(object);
     }
+    increment();
     BencodeList becode_list(becode_objects);
-    return BencodeObject{std::move(becode_list)};
+    return BencodeObject{becode_list};
 }
 
 BencodeObject BencodeParser::dict_helper() {

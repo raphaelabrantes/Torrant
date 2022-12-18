@@ -5,19 +5,18 @@
 #include <utility>
 #include "BencodeObject.h"
 
-using std::string;
-using std::move;
+
 class BencodeParser {
 public:
-    explicit BencodeParser(string input): m_input(move(input)){};
+    explicit BencodeParser(std::string input): m_input(std::move(input)){};
     BencodeObject parse();
-    string consume(size_t count);
+    std::string consume(size_t count);
 
 private:
     char peek(int offset = 0) const;
     inline void increment() { m_index++;}
     size_t m_index { 0 };
-    string m_input;
+    std::string m_input;
 
     BencodeObject string_helper();
 
