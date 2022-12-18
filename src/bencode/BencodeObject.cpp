@@ -117,3 +117,24 @@ BencodeObject &BencodeObject::operator=(BencodeObject && other) {
     }
     return *this;
 }
+
+std::string BencodeObject::get_encoded() const {
+    std::string encoded;
+    switch(m_type){
+        case Type::String:
+            encoded = std::to_string(as_string().length()) + ":" + as_string();
+            break;
+        case Type::Integer:
+            encoded =  "i" + std::to_string(as_integer()) + "e";
+            break;
+        case Type::List:
+            encoded = as_list().get_encoded();
+            break;
+        case Type::Dict:
+            encoded = as_dict().get_encoded();
+            break;
+        default:
+            break;
+    }
+    return encoded;
+}

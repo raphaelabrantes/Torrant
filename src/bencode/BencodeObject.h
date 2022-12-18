@@ -44,6 +44,8 @@ public:
     int64_t as_integer() const;
     BencodeList as_list() const;
     BencodeDict as_dict() const;
+    std::string get_encoded() const;
+
 
 private:
     void clear();
