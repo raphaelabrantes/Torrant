@@ -83,22 +83,12 @@ BencodeObject BencodeParser::list_helper() {
 BencodeObject BencodeParser::dict_helper() {
     increment();
     BencodeDict becode_dict;
-    while (peek() != 'e'){
+    while (peek() != 'e') {
         auto size = get_size();
         increment();
         auto key = consume(size);
-        //FIXME : Find a way to work with the correct amount of charecters
-        if(key != std::string("pieces")){
-            auto value = parse();
-            becode_dict.set(key, value);
-        } else{
-            auto index = m_input.find("e6:locale");
-            if(index == std::string::npos){
-                throw std::exception();
-            }
-            auto value = BencodeObject{consume(index - m_index)};
-            becode_dict.set(key, value);
-        }
+        auto value = parse();
+        becode_dict.set(key, value);
     }
     increment();
     return BencodeObject {becode_dict};
