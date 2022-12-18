@@ -4,11 +4,11 @@
 #include "BencodeObject.h"
 #include "BencodeParser.h"
 
-BencodeObject BencodeObject::from_string(const string &input) {
+BencodeObject BencodeObject::from_string(const std::string &input) {
     return BencodeParser(input).parse();
 }
 
-string BencodeObject::as_string() const {
+std::string BencodeObject::as_string() const {
     assert(is_string());
     return *m_value.as_string ;
 }
@@ -42,8 +42,8 @@ BencodeObject::BencodeObject(int64_t integer): m_type(Type::Integer) {
     m_value.as_integer = integer;
 }
 
-BencodeObject::BencodeObject(const string & str): m_type(Type::String){
-    m_value.as_string = new string(str);
+BencodeObject::BencodeObject(const std::string & str): m_type(Type::String){
+    m_value.as_string = new std::string(str);
 }
 
 BencodeObject::BencodeObject(const BencodeObject &other) {
@@ -65,8 +65,9 @@ void BencodeObject::copy_from(const BencodeObject &other) {
             break;
         case Type::Dict:
             m_value.as_dict = new BencodeDict(*other.m_value.as_dict);
+            break;
         default:
-            throw new std::exception;
+            throw std::exception();
 
     }
 }
