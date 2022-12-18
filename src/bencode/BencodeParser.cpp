@@ -1,5 +1,6 @@
 // Copyright (c) Raphael Prandini Thome de Abrantes 2022
 
+#include <iostream>
 #include "BencodeParser.h"
 
 BencodeObject BencodeParser::parse() {
@@ -86,9 +87,19 @@ BencodeObject BencodeParser::dict_helper() {
         auto size = get_size();
         increment();
         auto key = consume(size);
-        auto value = parse();
-        becode_dict.set(key, value);
+        //FIXME : Find a way to work with the correct amount of charecters
+        if(key != std::string("pieces")){
+            auto value = parse();
+            becode_dict.set(key, value);
+        } else{
+            auto index = m_input.find("e6:locale");
+            if(index == std::string::npos){
+                throw std::exception();
+            }
+            auto value = BencodeObject{consume(index - m_index)};
+            becode_dict.set(key, value);
+        }
     }
-
-    return BencodeObject {std::move(becode_dict)};
+    increment();
+    return BencodeObject {becode_dict};
 }
