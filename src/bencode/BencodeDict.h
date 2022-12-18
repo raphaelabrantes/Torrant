@@ -7,16 +7,14 @@
 
 class BencodeObject;
 
-using std::map;
-using std::string;
 
 class BencodeDict {
 public:
-    BencodeDict(std::map<string, BencodeObject> becode_map);
+    explicit BencodeDict(std::map<std::string, BencodeObject> becode_map);
     BencodeDict() = default;
-    void set(string key, BencodeObject& becodeObject);
+    void set(const std::string& key, const BencodeObject& becodeObject);
 
-    map<string, BencodeObject> values() const { return m_values; }
+    std::map<std::string, BencodeObject> values() const { return m_values; }
 private:
-    map<string, BencodeObject> m_values;
+    std::map<std::string, BencodeObject> m_values;
 };

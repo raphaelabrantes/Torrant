@@ -2,17 +2,17 @@
 
 #pragma once
 #include <utility>
-#include <vector>
+#include <list>
 #include "BencodeObject.h"
 
 class BencodeObject;
 
 class BencodeList {
 public:
-    explicit BencodeList(std::vector<BencodeObject> &values);
-    std::vector<BencodeObject>& values();
+    explicit BencodeList(const std::list<BencodeObject> &values);
+    std::list<BencodeObject>& values();
 private:
-    std::vector<BencodeObject> m_values ;
+    std::list<BencodeObject> m_values ;
 };
 
 

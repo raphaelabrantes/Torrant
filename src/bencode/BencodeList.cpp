@@ -6,9 +6,9 @@
 #include "BencodeObject.h"
 
 
-BencodeList::BencodeList(std::vector<BencodeObject>& values): m_values(std::move(values)) {}
+BencodeList::BencodeList(const std::list<BencodeObject>& values):
+    m_values(values) {}
 
-std::vector<BencodeObject>& BencodeList::values(){
-    return m_values ;
+std::list<BencodeObject>& BencodeList::values() {
+    return m_values;
 }
-
