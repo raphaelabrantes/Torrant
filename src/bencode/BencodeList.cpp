@@ -15,9 +15,18 @@ std::list<BencodeObject>& BencodeList::values() {
 
 std::string BencodeList::get_encoded() const {
     std::string enconded = "l" ;
-    for(auto each: m_values){
+    for(const auto& each: m_values){
         enconded += each.get_encoded();
     }
     enconded+='e';
     return enconded;
+}
+
+std::string BencodeList::get_beautiful() const {
+    std::string beautiful = "[";
+    for(const auto& each: m_values){
+        beautiful += " " + each.get_beautiful() + " ";
+    }
+    beautiful += "]\n";
+    return beautiful;
 }

@@ -45,6 +45,7 @@ public:
     BencodeList as_list() const;
     BencodeDict as_dict() const;
     std::string get_encoded() const;
+    std::string get_beautiful() const;
 
 
 private:

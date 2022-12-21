@@ -12,6 +12,7 @@ public:
     explicit BencodeList(const std::list<BencodeObject> &values);
     std::list<BencodeObject>& values();
     std::string get_encoded() const;
+    std::string get_beautiful() const;
 
 private:
     std::list<BencodeObject> m_values ;

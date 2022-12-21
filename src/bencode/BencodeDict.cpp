@@ -20,3 +20,18 @@ std::string BencodeDict::get_encoded() const {
     encoded += "e";
     return encoded;
 }
+
+std::string BencodeDict::get_beautiful() const{
+    std::string  beautiful = "{ ";
+    for(const auto& each: m_values){
+        beautiful += each.first + ": ";
+        beautiful += each.second.get_beautiful();
+        beautiful += " ";
+    }
+    beautiful += "}\n";
+    return beautiful;
+}
+
+BencodeObject BencodeDict::at(const std::string &key) const {
+    return m_values.at(key);
+}

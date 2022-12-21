@@ -138,3 +138,23 @@ std::string BencodeObject::get_encoded() const {
     }
     return encoded;
 }
+
+std::string BencodeObject::get_beautiful() const {
+    std::string beautiful;
+    switch(m_type){
+        case Type::String:
+            beautiful =  "\"" + as_string() + "\"";
+            break;
+        case Type::Integer:
+            beautiful = std::to_string(as_integer()) ;
+            break;
+        case Type::List:
+            beautiful = as_list().get_beautiful();
+            break;
+        case Type::Dict:
+            beautiful = as_dict().get_beautiful();
+            break;
+        default:
+            break;
+    }
+    return beautiful;}
