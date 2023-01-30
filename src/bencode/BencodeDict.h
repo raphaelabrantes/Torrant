@@ -15,6 +15,7 @@ public:
     void set(const std::string& key, const BencodeObject& becodeObject);
     BencodeObject at(const std::string& key) const;
     std::string get_encoded() const;
+    bool contains(const std::string& str) const {return m_values.contains(str);};
     std::map<std::string, BencodeObject> values() const { return m_values; }
     std::string get_beautiful() const;
 
