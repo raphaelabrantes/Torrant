@@ -23,6 +23,7 @@ PieceManager::PieceManager(const BencodeObject &piecesObject) {
 }
 
 std::string PieceManager::get_random_piece() {
+    // FIXME: HORRIBLE
     for (auto &item: pieces_map){
         if(item.second.second == Status::NotAcquired){
             item.second.second = Status::Searching;
