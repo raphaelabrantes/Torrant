@@ -27,6 +27,6 @@ private:
         Searching,
     };
 
-    std::unordered_map<std::string, std::pair<BencodeObject, Status>> pieces_map;
+    std::unordered_map<std::string, std::pair<BencodeObject, Status>> m_pieces_map;
 
 };

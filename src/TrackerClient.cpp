@@ -19,7 +19,7 @@ BencodeObject TrackerClient::get_result(const std::string &tracker, const std::s
     std::string path_req = tracker.substr(url_path_position + 1);
     boost::asio::io_context ioc;
     boost::format url =
-            boost::format(request_format) % path_req % "pO9iEEJs5CQi7kyNFBEw" % escaped_hash % 6881 % 100 % 0 % 0 % "started";
+            boost::format(m_request_format) % path_req % "pO9iEEJs5CQi7kyNFBEw" % escaped_hash % 6881 % 100 % 0 % 0 % "started";
     boost::asio::ip::tcp::resolver resolver(ioc);
     boost::beast::tcp_stream stream(ioc);
 

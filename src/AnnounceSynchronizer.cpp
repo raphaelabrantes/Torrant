@@ -10,33 +10,31 @@ std::string AnnounceSynchronizer::add_peer(const std::string &basicString) {
 }
 
 void AnnounceSynchronizer::exec() {
-    for (const auto &tracker: trackers){
+    for (const auto &tracker: m_trackers){
         std::list<address> retrived_peers = retrive_peers(tracker);
         for (const auto &item: retrived_peers){
-            addresses.insert(item);
+            m_addresses.insert(item);
         }
     }
-    pool = new boost::asio::thread_pool(addresses.size());
-    for (auto &address: addresses){
-        boost::asio::post(*pool, [&address]() {
-            // TODO: Implement peer worker
-        });
+    m_pool = new boost::asio::thread_pool(m_addresses.size());
+    for (auto &address: m_addresses){
+        boost::asio::post(*m_pool, );
     }
 
 }
 
 AnnounceSynchronizer::AnnounceSynchronizer(const BencodeObject &bencodeObject) {
-    object = bencodeObject.as_dict().values();
-    auto main_announcer = object.at("announce").as_string();
-    trackers.insert(main_announcer);
-    info_hash = generate_hash(object.at("info").get_encoded());
-    escaped_hash = generate_hash_escaped(info_hash);
-    if(object.contains("announce-list")){
-        const auto announce_list = object.at("announce-list").as_list().values();
+    m_object = bencodeObject.as_dict().values();
+    auto main_announcer = m_object.at("announce").as_string();
+    m_trackers.insert(main_announcer);
+    m_info_hash = generate_hash(m_object.at("info").get_encoded());
+    m_escaped_hash = generate_hash_escaped(m_info_hash);
+    if(m_object.contains("announce-list")){
+        const auto announce_list = m_object.at("announce-list").as_list().values();
         for (auto const &item: announce_list){
             const auto list = item.as_list().values();
             for (const auto &x: list) {
-                trackers.insert(x.as_string());
+                m_trackers.insert(x.as_string());
             }
         }
     }
@@ -66,7 +64,7 @@ std::string AnnounceSynchronizer::generate_hash_escaped(const std::string &hash_
 }
 
 std::list<address> AnnounceSynchronizer::retrive_peers(const std::string &tracker) const {
-        BencodeObject bencodeObject = tracker_client.get_result(tracker, escaped_hash);
+        BencodeObject bencodeObject = m_tracker_client.get_result(tracker, m_escaped_hash);
         std::list<address> peer_list;
         if(bencodeObject.is_dict() && bencodeObject.as_dict().contains("peers")){
             auto peers = bencodeObject.as_dict().at("peers").as_string();

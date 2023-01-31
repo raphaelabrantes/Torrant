@@ -33,11 +33,11 @@ private:
 
     address get_peer(const std::string& peer) const;
 
-    std::map<std::string,BencodeObject>object;
-    boost::asio::thread_pool *pool;
-    TrackerClient tracker_client;
-    std::set<std::string> trackers;
-    std::set<address> addresses;
-    std::string info_hash;
-    std::string escaped_hash;
+    std::map<std::string,BencodeObject>m_object;
+    boost::asio::thread_pool *m_pool;
+    TrackerClient m_tracker_client;
+    std::set<std::string> m_trackers;
+    std::set<address> m_addresses;
+    std::string m_info_hash;
+    std::string m_escaped_hash;
 };
