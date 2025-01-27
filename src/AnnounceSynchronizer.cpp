@@ -4,6 +4,7 @@
 #include <cryptopp/sha.h>
 #include <boost/asio/post.hpp>
 #include <iostream>
+#include <thread>
 
 std::string AnnounceSynchronizer::add_peer(const std::string &basicString) {
     return std::string();
@@ -18,8 +19,12 @@ void AnnounceSynchronizer::exec() {
     }
     m_pool = new boost::asio::thread_pool(m_addresses.size());
     for (auto &address: m_addresses){
-        boost::asio::post(*m_pool, );
+        boost::asio::post(*m_pool, [this, &address]() {
+            std::cout << address.ip << std::endl;
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        });
     }
+    m_pool->join();
 
 }
 

@@ -14,7 +14,7 @@
 
 
 int main() {
-    std::ifstream metafile("tests/alice_in_wonderland_librivox_archive.torrent");
+    std::ifstream metafile("tests/archlinux-2025.01.01-x86_64.iso.torrent");
     std::stringstream buffer;
     buffer << metafile.rdbuf();
     std::string metafile_contents = buffer.str();

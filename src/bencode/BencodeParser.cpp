@@ -1,6 +1,5 @@
 // Copyright (c) Raphael Prandini Thome de Abrantes 2022
 
-#include <iostream>
 #include "BencodeParser.h"
 
 BencodeObject BencodeParser::parse() {
