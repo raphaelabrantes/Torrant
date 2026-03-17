@@ -5,28 +5,21 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include "bencode/BencodeObject.h"
 
+#include "Piece.h"
+#include "bencode/BencodeObject.h"
+#define HASH_SIZE 20
 
 class PieceManager {
 public:
-    explicit PieceManager(const BencodeObject &piecesObject);
+    explicit PieceManager(BencodeDict &InfoDic);
 
-    std::string get_piece_info(const std::string &basicString);
-
-    std::string add_piece(const std::string &basicString);
-
-    void failed_to_retrive_info(const std::string &md5);
-
-    std::string get_random_piece();
+    Piece get_piece_info(int index);
 
 private:
-    enum class Status {
-        Acquired,
-        NotAcquired,
-        Searching,
-    };
-
-    std::unordered_map<std::string, std::pair<BencodeObject, Status>> m_pieces_map;
+    bool is_single_file;
+    std::unordered_map<std::string, std::pair<BencodeObject, Piece::Status>> m_pieces_map;
+     std::vector<Piece> m_pieces_list;
+    uint64_t pieces_amount;
 
 };
