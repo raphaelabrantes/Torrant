@@ -35,3 +35,9 @@ std::string BencodeDict::get_beautiful() const{
 BencodeObject BencodeDict::at(const std::string &key) const {
     return m_values.at(key);
 }
+
+BencodeObject BencodeDict::orElse(const std::string &defaultV, const std::string &orElse) {
+    return m_values.contains(defaultV) ? m_values.at(defaultV) : m_values.at(orElse);
+
+}
+

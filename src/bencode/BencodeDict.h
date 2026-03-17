@@ -18,6 +18,7 @@ public:
     bool contains(const std::string& str) const {return m_values.contains(str);};
     std::map<std::string, BencodeObject> values() const { return m_values; }
     std::string get_beautiful() const;
+    BencodeObject orElse(const std::string& defaultV, const std::string& orElse);
 
 private:
     std::map<std::string, BencodeObject> m_values;
