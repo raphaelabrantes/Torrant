@@ -1,30 +1,15 @@
-// Copyright (c) Raphael Prandini Thome de Abrantes 2023
+// Copyright (c) Raphael Prandini Thome de Abrantes 2026
 
 #include "AnnounceSynchronizer.h"
 #include <cryptopp/sha.h>
-#include <boost/asio/post.hpp>
 #include <iostream>
-#include <thread>
+#include <boost/asio/io_context.hpp>
 
-std::string AnnounceSynchronizer::add_peer(const std::string &basicString) {
-    return std::string();
-}
 
-void AnnounceSynchronizer::exec() {
+void AnnounceSynchronizer::sync() {
     for (const auto &tracker: m_trackers){
-        std::list<address> retrived_peers = retrive_peers(tracker);
-        for (const auto &item: retrived_peers){
-            m_addresses.insert(item);
-        }
+        retrive_peers(tracker);
     }
-    m_pool = new boost::asio::thread_pool(m_addresses.size());
-    for (auto &address: m_addresses){
-        boost::asio::post(*m_pool, [this, &address]() {
-            std::cout << address.ip << std::endl;
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-        });
-    }
-    m_pool->join();
 
 }
 
@@ -43,6 +28,7 @@ AnnounceSynchronizer::AnnounceSynchronizer(const BencodeObject &bencodeObject) {
             }
         }
     }
+    sync();
 }
 
 std::string AnnounceSynchronizer::generate_hash(const std::string &info_encoded) {
@@ -68,17 +54,16 @@ std::string AnnounceSynchronizer::generate_hash_escaped(const std::string &hash_
     return meta_hash_escaped;
 }
 
-std::list<address> AnnounceSynchronizer::retrive_peers(const std::string &tracker) const {
+void AnnounceSynchronizer::retrive_peers(const std::string &tracker) {
         BencodeObject bencodeObject = m_tracker_client.get_result(tracker, m_escaped_hash);
         std::list<address> peer_list;
         if(bencodeObject.is_dict() && bencodeObject.as_dict().contains("peers")){
             auto peers = bencodeObject.as_dict().at("peers").as_string();
             for(int i = 0; i < peers.length(); i+=6){
                 auto peer = get_peer(peers.substr(i, 6));
-                peer_list.push_back(peer);
+                m_addresses.insert(peer);
             }
         }
-    return peer_list;
 
 }
 

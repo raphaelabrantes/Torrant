@@ -1,4 +1,4 @@
-// Copyright (c) Raphael Prandini Thome de Abrantes 2023
+// Copyright (c) Raphael Prandini Thome de Abrantes 2026
 
 #pragma once
 
@@ -20,21 +20,20 @@ class AnnounceSynchronizer {
 public:
     explicit AnnounceSynchronizer(const BencodeObject &bencodeObject);
 
-    std::string add_peer(const std::string &basicString);
+    std::set<address> get_announced_addresses();
 
-    void exec();
+    void sync();
 
 private:
     static std::string generate_hash(const std::string &info_encoded);
 
     static std::string generate_hash_escaped(const std::string &hash_info);
 
-    std::list<address> retrive_peers(const std::string &tracker) const;
+    void retrive_peers(const std::string &tracker);
 
     address get_peer(const std::string& peer) const;
 
     std::map<std::string,BencodeObject>m_object;
-    boost::asio::thread_pool *m_pool;
     TrackerClient m_tracker_client;
     std::set<std::string> m_trackers;
     std::set<address> m_addresses;

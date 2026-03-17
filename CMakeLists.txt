@@ -3,8 +3,8 @@ project(torrant)
 
 set(CMAKE_CXX_STANDARD 23)
 
-find_package(Boost 1.8)
-INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
+find_package(Boost REQUIRED)
+INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIRS} )
 
 add_executable(torrant
         src/main.cpp
@@ -21,11 +21,15 @@ add_executable(torrant
         src/PieceManager.cpp
         src/PieceManager.h
         src/TrackerClient.cpp
-        src/TrackerClient.h )
+        src/TrackerClient.h
+        src/Piece.h
+        src/Server.cpp
+        src/Server.h
+)
 
-target_link_libraries(torrant LINK_PUBLIC ${Boost_LIBRARIES})
+target_link_libraries(torrant Boost::headers)
+target_link_options(torrant PUBLIC -lcryptopp)
 add_custom_target(copy_assets
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/tests ${CMAKE_CURRENT_BINARY_DIR}/tests
-        )
-target_link_options(torrant PUBLIC -lcryptopp)
+)
 add_dependencies(torrant copy_assets)

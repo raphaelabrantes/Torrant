@@ -1,4 +1,4 @@
-// Copyright (c) Raphael Prandini Thome de Abrantes 2022
+// Copyright (c) Raphael Prandini Thome de Abrantes 2026
 
 #include <iostream>
 #include <fstream>
@@ -14,13 +14,17 @@
 
 
 int main() {
-    std::ifstream metafile("tests/archlinux-2025.01.01-x86_64.iso.torrent");
+    std::ifstream metafile("tests/words.torrent");
     std::stringstream buffer;
     buffer << metafile.rdbuf();
     std::string metafile_contents = buffer.str();
     BencodeObject becode_object = BencodeObject::from_string(metafile_contents);
-    PieceManager piece_manager(becode_object.as_dict().at("info").as_dict().at("files"));
+    BencodeDict info = becode_object
+        .as_dict()
+        .at("info")
+        .as_dict();
+    PieceManager piece_manager(info);
     AnnounceSynchronizer announce_synchronizer(becode_object);
-    announce_synchronizer.exec();
+    Server server(piece_manager, announce_synchronizer);
     return 0;
 }
