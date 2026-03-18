@@ -20,7 +20,13 @@ class AnnounceSynchronizer {
 public:
     explicit AnnounceSynchronizer(const BencodeObject &bencodeObject);
 
-    std::set<address> get_announced_addresses();
+    std::vector<address> get_peers() {
+        return {m_addresses.begin(), m_addresses.end()};
+    };
+
+    std::string get_info_hash() {
+        return m_info_hash;
+    }
 
     void sync();
 

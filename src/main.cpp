@@ -9,8 +9,7 @@
 #include "bencode/BencodeObject.h"
 #include "AnnounceSynchronizer.h"
 #include "PieceManager.h"
-
-
+#include "Server.h"
 
 
 int main() {
@@ -26,5 +25,6 @@ int main() {
     PieceManager piece_manager(info);
     AnnounceSynchronizer announce_synchronizer(becode_object);
     Server server(piece_manager, announce_synchronizer);
+    server.exec();
     return 0;
 }
